@@ -1,15 +1,15 @@
-CREATE SEQUENCE IF NOT EXISTS assicurazioni_id_seq
-CREATE SEQUENCE IF NOT EXISTS avvocati_id_seq
-CREATE SEQUENCE IF NOT EXISTS dottori_id_seq
-CREATE SEQUENCE IF NOT EXISTS incarichi_id_seq
-CREATE SEQUENCE IF NOT EXISTS liquidatori_id_seq
-CREATE SEQUENCE IF NOT EXISTS sedi_id_seq
-CREATE SEQUENCE IF NOT EXISTS soggetti_id_seq
+CREATE SEQUENCE IF NOT EXISTS assicurazioni_id_seq;
+CREATE SEQUENCE IF NOT EXISTS avvocati_id_seq;
+CREATE SEQUENCE IF NOT EXISTS dottori_id_seq;
+CREATE SEQUENCE IF NOT EXISTS incarichi_id_seq;
+CREATE SEQUENCE IF NOT EXISTS liquidatori_id_seq;
+CREATE SEQUENCE IF NOT EXISTS sedi_id_seq;
+CREATE SEQUENCE IF NOT EXISTS soggetti_id_seq;
 
 
 
 
-CREATE TABLE public.assicurazioni
+CREATE TABLE IF NOT EXISTS public.assicurazioni
 (
     id numeric NOT NULL,
     nome text COLLATE pg_catalog."default",
@@ -22,9 +22,9 @@ CREATE TABLE public.assicurazioni
     codicefiscale text COLLATE pg_catalog."default",
     note text COLLATE pg_catalog."default",
     CONSTRAINT assicurazioni_pkey PRIMARY KEY (id)
-)
+);
 
-CREATE TABLE public.avvocati
+CREATE TABLE IF NOT EXISTS public.avvocati
 (
     id numeric NOT NULL,
     nome text COLLATE pg_catalog."default",
@@ -39,34 +39,34 @@ CREATE TABLE public.avvocati
     fax text COLLATE pg_catalog."default",
     note text COLLATE pg_catalog."default",
     CONSTRAINT avvocati_pkey PRIMARY KEY (id)
-)
+);
 
-CREATE TABLE public.dottori
+CREATE TABLE IF NOT EXISTS public.dottori
 (
     id numeric NOT NULL,
     nome text COLLATE pg_catalog."default" NOT NULL,
     cognome text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT dottori_pkey PRIMARY KEY (id)
-)
+);
 
-CREATE TABLE public.liquidatori
+CREATE TABLE IF NOT EXISTS public.liquidatori
 (
     id numeric NOT NULL,
     nome text COLLATE pg_catalog."default" NOT NULL,
     cognome text COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT liquidatori_pkey PRIMARY KEY (id)
-)
+);
 
-CREATE TABLE public.sedi
+CREATE TABLE IF NOT EXISTS public.sedi
 (
     id numeric NOT NULL,
     nome text COLLATE pg_catalog."default",
     indirizzo text COLLATE pg_catalog."default",
     cap numeric,
     CONSTRAINT sedi_pkey PRIMARY KEY (id)
-)
+);
 
-CREATE TABLE public.soggetti
+CREATE TABLE IF NOT EXISTS public.soggetti
 (
     telefono text COLLATE pg_catalog."default",
     sesso text COLLATE pg_catalog."default",
@@ -82,9 +82,9 @@ CREATE TABLE public.soggetti
     cap numeric,
     allegato bytea,
     CONSTRAINT soggetti_pkey PRIMARY KEY (id)
-)
+);
 
-CREATE TABLE public.incarichi
+CREATE TABLE IF NOT EXISTS public.incarichi
 (
     id numeric NOT NULL,
     tipo text COLLATE pg_catalog."default",
@@ -124,9 +124,9 @@ CREATE TABLE public.incarichi
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);
 
-CREATE TABLE public.appuntamenti
+CREATE TABLE IF NOT EXISTS public.appuntamenti
 (
     id numeric NOT NULL,
     id_studio numeric NOT NULL,
@@ -145,4 +145,4 @@ CREATE TABLE public.appuntamenti
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);
