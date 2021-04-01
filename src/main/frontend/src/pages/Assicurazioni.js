@@ -175,7 +175,6 @@ export function Assicurazioni(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Nome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Nome Assicurazione"
                                     defaultValue=""
@@ -189,7 +188,6 @@ export function Assicurazioni(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Email </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Email Assicurazione"
                                     defaultValue=""
@@ -203,7 +201,6 @@ export function Assicurazioni(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Telefono principale </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Telefono principale"
                                     defaultValue=""
@@ -230,7 +227,6 @@ export function Assicurazioni(props) {
                             <Form.Group as={Row} controlId="formPlaintextAddress">
                                 <Form.Label> Indirizzo </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Indirizzo Assicurazione"
                                     defaultValue=""
@@ -245,7 +241,6 @@ export function Assicurazioni(props) {
                             <Form.Group as={Row} controlId="formPlaintextCap">
                                 <Form.Label> CAP </Form.Label>
                                 <Form.Control
-                                    required
                                     type="number"
                                     placeholder="CAP Assicurazione"
                                     defaultValue=""

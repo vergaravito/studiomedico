@@ -34,7 +34,6 @@ export function Dottori(props) {
                 fetchDottori();
               })
             .catch(err => {
-                console.log(err);
                 isShowFailAlert(true);
             });
     }
@@ -138,7 +137,6 @@ export function Dottori(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Nome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Nome Dottore"
                                     defaultValue=""
@@ -153,7 +151,6 @@ export function Dottori(props) {
                             <Form.Group as={Row} controlId="formPlaintextAddress">
                                 <Form.Label> Cognome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Indirizzo Dottore"
                                     defaultValue=""

@@ -143,7 +143,6 @@ export function Studi(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Nome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Nome Studio"
                                     defaultValue=""
@@ -158,7 +157,6 @@ export function Studi(props) {
                             <Form.Group as={Row} controlId="formPlaintextAddress">
                                 <Form.Label> Indirizzo </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Indirizzo Studio"
                                     defaultValue=""
@@ -173,7 +171,6 @@ export function Studi(props) {
                             <Form.Group as={Row} controlId="formPlaintextCap">
                                 <Form.Label> CAP </Form.Label>
                                 <Form.Control
-                                    required
                                     type="number"
                                     placeholder="CAP Studio"
                                     defaultValue=""

@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Moment from 'react-moment';
+import 'moment-timezone';
+
+import AsyncSelect from 'react-select/async';
 
 export function Incarichi(props) {
     const [postId, setPostId] = useState(null);
 
     const [id, setId] = useState(null);
+    const [numero_incarico, setNumeroIncarico] = useState("");
     const [tipo, setTipo] = useState("");
     const [idAssicurazione, setIdAssicurazione] = useState("");
     const [idLiquidatore, setIdLiquidatore] = useState("");
@@ -18,13 +23,13 @@ export function Incarichi(props) {
     const [dataSinistro, setDataSinistro] = useState("");
     const [dataIncarico, setDataIncarico] = useState("");
     const [note, setNote] = useState("");
-
+    
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
     
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: id, tipo: tipo, id_assicurazione: idAssicurazione,
+        body: JSON.stringify({ id: id, numero_incarico: numero_incarico, tipo: tipo, id_assicurazione: idAssicurazione,
             id_liquidatore: idLiquidatore, ambito: ambito, id_soggetto: idSoggetto,
             id_avvocato: idAvvocato, n_sinistro: nSinistro, id_dottore: idDottore,
             data_sinistro: dataSinistro, data_incarico: dataIncarico, note: note })
@@ -37,6 +42,7 @@ export function Incarichi(props) {
     const [showFailDeleteAlert, isShowFailDeleteAlert]= useState(false);
 
     const handleSubmit = (evt) => {
+        console.log(requestOptions);
         evt.preventDefault();
         fetch('http://localhost:8080/insert/incarico', requestOptions)
             .then(response => response.json())
@@ -46,7 +52,6 @@ export function Incarichi(props) {
                 fetchIncarichi();
               })
             .catch(err => {
-                console.log(err);
                 isShowFailAlert(true);
             });
     }
@@ -56,7 +61,7 @@ export function Incarichi(props) {
             const deleteOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: incarico.id, tipo: incarico.tipo, id_assicurazione: incarico.id_assicurazione,
+                body: JSON.stringify({ id: incarico.id, numero_incarico: incarico.numero_incarico, tipo: incarico.tipo, id_assicurazione: incarico.id_assicurazione,
                     id_liquidatore: incarico.id_liquidatore, ambito: incarico.ambito, id_soggetto: incarico.id_soggetto,
                     id_avvocato: incarico.id_avvocato, n_sinistro: incarico.n_sinistro, id_dottore: incarico.id_dottore,
                     data_sinistro: incarico.data_sinistro, data_incarico: incarico.data_incarico, note: incarico.note })
@@ -81,6 +86,7 @@ export function Incarichi(props) {
     const handleEdit = (incarico) => {
         console.log("EDIT", incarico);
         setId(incarico.id);
+        setNumeroIncarico(incarico.numero_incarico);
         setTipo(incarico.tipo);
         setIdAssicurazione(incarico.id_assicurazione);
         setIdLiquidatore(incarico.id_liquidatore);
@@ -100,6 +106,7 @@ export function Incarichi(props) {
         setId(null);
 
         setTipo("");
+        setNumeroIncarico("");
         setIdAssicurazione("");
         setIdLiquidatore("");
         setAmbito("");
@@ -130,35 +137,30 @@ export function Incarichi(props) {
 
     const fetchAssicurazioni = () => {
         axios.get("http://localhost:8080/fetch/assicurazioni").then( res => {
-            console.log(res);
             setDataAss(res.data);
         });
     };
 
     const fetchLiquidatori = () => {
         axios.get("http://localhost:8080/fetch/liquidatori").then( res => {
-            console.log(res);
             setDataLiq(res.data);
         });
     };
 
     const fetchSoggetti = () => {
         axios.get("http://localhost:8080/fetch/soggetti").then( res => {
-            console.log(res);
             setDataSog(res.data);
         });
     };
 
     const fetchAvvocati = () => {
         axios.get("http://localhost:8080/fetch/avvocati").then( res => {
-            console.log(res);
             setDataAvv(res.data);
         });
     };
 
     const fetchDottori = () => {
         axios.get("http://localhost:8080/fetch/dottori").then( res => {
-            console.log(res);
             setDataDot(res.data);
         });
     };
@@ -173,37 +175,144 @@ export function Incarichi(props) {
     }, []);
 
     let incarichiArray = data;
-    let assicurazioniArray = dataAss;
-    let liquidatoriArray = dataLiq;
-    let soggettiArray = dataSog;
-    let avvocatiArray = dataAvv;
-    let dottoriArray = dataDot;
-
-    const renderAssicurazioni = (assicurazione) => {
-        return (
-            <option value={assicurazione.id}>{assicurazione.nome}</option>
-        )
-    }
 
     const renderIncarichi = (incarico) => {
         return (
             <tr key={incarico.id}>
+            <td>{incarico.numero_incarico}</td>
             <td>{incarico.tipo}</td>
-            <td>{incarico.id_assicurazione}</td>
-            <td>{incarico.id_liquidatore}</td>
+            <td>{getNomeAssicurazione(incarico.id_assicurazione)}</td>
+            <td>{getNomeLiquidatore(incarico.id_liquidatore)}</td>
             <td>{incarico.ambito}</td>
-            <td>{incarico.id_soggetto}</td>
+            <td>{getNomeSoggetto(incarico.id_soggetto)}</td>
             <td>{incarico.id_avvocato}</td>
             <td>{incarico.n_sinistro}</td>
-            <td>{incarico.id_dottore}</td>
-            <td>{incarico.data_sinistro}</td>
-            <td>{incarico.data_incarico}</td>
+            <td>{getNomeDottore(incarico.id_dottore)}</td>
+            <td>
+                <Moment format="DD/MM/YY">
+                    {incarico.data_sinistro}
+                </Moment>
+            </td>
+            <td>
+                <Moment format="DD/MM/YY">
+                    {incarico.data_incarico}
+                </Moment>
+            </td>
             <td>{incarico.note}</td>
             <td><Button onClick={() => handleEdit(incarico)}>Edit</Button></td>
             <td><Button onClick={() => handleDelete(incarico)}>Delete</Button></td>
             </tr>
         )
     }
+
+    const getNomeAssicurazione = (id) => {
+        const nome = "";
+        for (let index = 0; index < dataAss.length; index++) {
+            const element = dataAss[index].id;
+            if(element === id){
+                return dataAss[index].nome;
+            }
+        }
+        return nome;
+    };
+
+    const getNomeLiquidatore = (id) => {
+        const nome = "";
+        for (let index = 0; index < dataLiq.length; index++) {
+            const element = dataLiq[index].id;
+            if(element === id){
+                return dataLiq[index].cognome + " " + dataLiq[index].nome;
+            }
+        }
+        return nome;
+    };
+
+    const getNomeSoggetto = (id) => {
+        const nome = "";
+        for (let index = 0; index < dataSog.length; index++) {
+            const element = dataSog[index].id;
+            if(element === id){
+                return dataSog[index].cognome + " " + dataLiq[index].nome;
+            }
+        }
+        return nome;
+    };
+
+    const getNomeDottore = (id) => {
+        const nome = "";
+        for (let index = 0; index < dataDot.length; index++) {
+            const element = dataDot[index].id;
+            if(element === id){
+                return dataDot[index].cognome + " " + dataLiq[index].nome;
+            }
+        }
+        return nome;
+    };
+
+    const filterAssicurazioni = (inputValue) => {
+        return dataAss.map((assicurazione, index) => (                                        
+            { value: assicurazione.id, label: assicurazione.nome }
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadAssicurazioni = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterAssicurazioni(inputValue));
+        }, 1000);
+    };
+    
+    const filterLiquidatori = (inputValue) => {
+        return dataLiq.map((liquidatore, index) => (                                        
+            { value: liquidatore.id, label: liquidatore.cognome + " " + liquidatore.nome }
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadLiquidatori = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterLiquidatori(inputValue));
+        }, 1000);
+    };
+
+    const filterSoggetti = (inputValue) => {
+        return dataSog.map((soggetto, index) => (                                        
+            { value: soggetto.id, label: soggetto.cognome + " " + soggetto.nome + " - " + soggetto.datanascita.substring(0, 10)}
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadSoggetti = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterSoggetti(inputValue));
+        }, 1000);
+    };
+
+    const filterAvvocati = (inputValue) => {
+        return dataAvv.map((avvocato, index) => (                                        
+            { value: avvocato.id, label: avvocato.cognome + " " + avvocato.nome }
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadAvvocati = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterAvvocati(inputValue));
+        }, 1000);
+    };
+
+    const filterDottori = (inputValue) => {
+        return dataDot.map((dottore, index) => (                                        
+            { value: dottore.id, label: dottore.cognome + " " + dottore.nome }
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadDottori = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterDottori(inputValue));
+        }, 1000);
+    };
 
     return (
         <div class="container">
@@ -215,6 +324,7 @@ export function Incarichi(props) {
                     <Table striped condensed hover>
                         <thead>
                             <tr>
+                            <th>Numero Incarico</th>
                             <th>Tipo</th>
                             <th>Assicurazione</th>
                             <th>Liquidatore</th>
@@ -245,9 +355,22 @@ export function Incarichi(props) {
                     <div class="px-2">
                         <Form onSubmit={handleSubmit}>
                             <Form.Group as={Row} controlId="formPlaintextName">
+                                <Form.Label> Numero Incarico </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="es. 0000/2020"
+                                    defaultValue=""
+                                    value={numero_incarico}
+                                    onChange={e => setNumeroIncarico(e.target.value)}
+                                    disabled
+                                />
+                                <Form.Text className="text-muted">
+                                Numero incarico autogenerato in fase di inserimento
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Tipo </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Tipo Incarico"
                                     defaultValue=""
@@ -258,16 +381,124 @@ export function Incarichi(props) {
                                 Inserisci il tipo Incarico
                                 </Form.Text>
                             </Form.Group>
-                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
-                                <Form.Label> Assicurazione </Form.Label>
+
+                            <Form.Group as={Row} controlId="formPlaintextName">
+                                <Form.Label> Ambito </Form.Label>
                                 <Form.Control
-                                    as="select"
-                                    value={idAssicurazione}
-                                    onChange={e => setIdAssicurazione(e.target.value)}>
-                                    {assicurazioniArray.map(renderAssicurazioni)}
-                                </Form.Control>
+                                    type="text"
+                                    placeholder="Ambito Incarico"
+                                    defaultValue=""
+                                    value={ambito}
+                                    onChange={e => setAmbito(e.target.value)}
+                                />
+                                <Form.Text className="text-muted">
+                                Inserisci ambito Incarico
+                                </Form.Text>
                             </Form.Group>
 
+                            <Form.Group as={Row} controlId="formPlaintextName">
+                                <Form.Label> Numero Sinistro </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="N. Sinistro"
+                                    defaultValue=""
+                                    value={nSinistro}
+                                    onChange={e => setNSinistro(e.target.value)}
+                                />
+                                <Form.Text className="text-muted">
+                                Inserisci numero Sinistro
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="formPlaintextName">
+                                <Form.Label> Data Sinistro </Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    placeholder="Data Sinistro"
+                                    defaultValue=""
+                                    value={dataSinistro}
+                                    onChange={e => setDataSinistro(e.target.value)}
+                                />
+                                <Form.Text className="text-muted">
+                                Inserisci il Data Sinistro
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="formPlaintextName">
+                                <Form.Label> Data Incarico </Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    placeholder="Data Incarico"
+                                    defaultValue=""
+                                    value={dataIncarico}
+                                    onChange={e => setDataIncarico(e.target.value)}
+                                />
+                                <Form.Text className="text-muted">
+                                Inserisci il Data Incarico
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Soggetto </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Soggetto"
+                                    loadOptions={loadSoggetti}
+                                    defaultOptions={dataSog.map((soggetto, index) => (                                        
+                                        { value: soggetto.id, label: soggetto.cognome + " " + soggetto.nome + " - " + soggetto.datanascita.substring(0, 10) }
+                                    ))}
+                                    onChange={e => setIdSoggetto(e.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Assicurazione </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Assicurazione"
+                                    loadOptions={loadAssicurazioni}
+                                    defaultOptions={dataAss.map((assicurazione, index) => (                                        
+                                        { value: assicurazione.id, label: assicurazione.nome }
+                                    ))}
+                                    onChange={e => setIdAssicurazione(e.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Liquidatore </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Liquidatore"
+                                    loadOptions={loadLiquidatori}
+                                    defaultOptions={dataLiq.map((liquidatore, index) => (                                        
+                                        { value: liquidatore.id, label: liquidatore.cognome + " " + liquidatore.nome }
+                                    ))}
+                                    onChange={e => setIdLiquidatore(e.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Avvocato </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Avvocato"
+                                    loadOptions={loadAvvocati}
+                                    defaultOptions={dataAvv.map((avvocato, index) => (                                        
+                                        { value: avvocato.id, label: avvocato.cognome + " " + avvocato.nome }
+                                    ))}
+                                    onChange={e => setIdAvvocato(e.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Dottore </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Dottore"
+                                    loadOptions={loadDottori}
+                                    defaultOptions={dataDot.map((dottore, index) => (                                        
+                                        { value: dottore.id, label: dottore.cognome + " " + dottore.nome }
+                                    ))}
+                                    onChange={e => setIdDottore(e.value)}
+                                />
+                            </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextSubmit">
                                 <Button variant="primary" type="submit">Salva</Button>
                                 <Button variant="secondary" onClick={() => clearForm()}>Annulla</Button>

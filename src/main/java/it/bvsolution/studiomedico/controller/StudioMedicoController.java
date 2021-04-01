@@ -3,9 +3,12 @@ package it.bvsolution.studiomedico.controller;
 import it.bvsolution.studiomedico.model.*;
 import it.bvsolution.studiomedico.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,6 +35,12 @@ public class StudioMedicoController {
 
     @Autowired
     IncarichiRepository incarichiReposirory;
+
+    @Autowired
+    AppuntamentiRepository appuntamentiRepository;
+
+    @Autowired
+    StudioMedicoServices studioMedicoServices;
 
     //STUDI CRUD
     @GetMapping(value = "/fetch/studi")
@@ -65,6 +74,11 @@ public class StudioMedicoController {
         soggettiRepository.delete(soggetto);
     }
 
+    @GetMapping(value = "/fetch/soggetto")
+    public SoggettiEntity fetchSoggetto(@RequestBody Long id){
+        return soggettiRepository.findById(id).get();
+    }
+
     //ASSICURAZIONI CRUD
 
     @GetMapping(value = "/fetch/assicurazioni")
@@ -80,6 +94,11 @@ public class StudioMedicoController {
     @PostMapping(value="/delete/assicurazione")
     public void deleteAssicurazione(@RequestBody AssicurazioniEntity assicurazione) {
         assicurazioniRepository.delete(assicurazione);
+    }
+
+    @GetMapping(value = "/fetch/assicurazione")
+    public AssicurazioniEntity fetchAssicurazione(@RequestBody Long id){
+        return assicurazioniRepository.findById(id).get();
     }
 
     //AVVOCATI CRUD
@@ -99,6 +118,11 @@ public class StudioMedicoController {
         avvocatiRepository.delete(avvocato);
     }
 
+    @GetMapping(value = "/fetch/avvocato")
+    public AvvocatiEntity fetchAvvocato(@RequestBody Long id){
+        return avvocatiRepository.findById(id).get();
+    }
+
     //LIQUIDATORI CRUD
 
     @GetMapping(value = "/fetch/liquidatori")
@@ -114,6 +138,11 @@ public class StudioMedicoController {
     @PostMapping(value="/delete/liquidatore")
     public void deleteLiquidatore(@RequestBody LiquidatoriEntity liquidatore) {
         liquidatoriRepository.delete(liquidatore);
+    }
+
+    @GetMapping(value = "/fetch/liquidatore")
+    public LiquidatoriEntity fetchLiquidatore(@RequestBody Long id){
+        return liquidatoriRepository.findById(id).get();
     }
 
     //DOTTORI CRUD
@@ -132,6 +161,7 @@ public class StudioMedicoController {
     public void deleteDottore(@RequestBody DottoriEntity dottore) {
         dottoriRepository.delete(dottore);
     }
+
     @GetMapping(value = "/fetch/dottore")
     public DottoriEntity fetchDottore(@RequestBody Long id){
         return dottoriRepository.findById(id).get();
@@ -146,11 +176,48 @@ public class StudioMedicoController {
 
     @PostMapping(value="/insert/incarico", consumes = "application/json")
     public IncarichiEntity insertIncarico(@RequestBody IncarichiEntity incarico) {
-        return incarichiReposirory.save(incarico);
+        return studioMedicoServices.SaveIncarico(incarico);
     }
 
     @PostMapping(value="/delete/incarico")
     public void deleteIncarico(@RequestBody IncarichiEntity incarico) {
         incarichiReposirory.delete(incarico);
     }
+
+    @GetMapping(value = "/fetch/incarico")
+    public IncarichiEntity fetchIncarico(@RequestBody Long id){
+        return incarichiReposirory.findById(id).get();
+    }
+
+    //APPUNTAMENTI CRUD
+
+    @GetMapping(value = "/fetch/appuntamenti")
+    public List<AppuntamentiEntity> fetchAppuntamenti(){
+        return appuntamentiRepository.findAll();
+    }
+
+    @GetMapping(value = "/get/appuntamenti")
+    public List<AppuntamentiEntity> getAppuntamenti(@RequestParam(name = "date") String dataAppuntamento) throws ParseException {
+        Date data1 = new SimpleDateFormat("dd/MM/yy hh:mm:ss").parse(dataAppuntamento + " 00:00:00");
+        Date data2 = new SimpleDateFormat("dd/MM/yy hh:mm:ss").parse(dataAppuntamento + " 23:59:59");
+
+        List<AppuntamentiEntity> appuntamenti = appuntamentiRepository.findAllByDataAppuntamentoBetween(data1, data2);
+        return appuntamenti;
+    }
+
+    @PostMapping(value="/insert/appuntamento", consumes = "application/json")
+    public AppuntamentiEntity insertAppuntamento(@RequestBody AppuntamentiEntity appuntamento) {
+        return appuntamentiRepository.save(appuntamento);
+    }
+
+    @PostMapping(value="/delete/appuntamento")
+    public void deleteAppuntamento(@RequestBody AppuntamentiEntity appuntamento) {
+        appuntamentiRepository.delete(appuntamento);
+    }
+
+    @GetMapping(value = "/fetch/appuntamento")
+    public List<AppuntamentiEntity> fetchAppuntamento(@RequestBody Date date){
+        return appuntamentiRepository.findByDataAppuntamento(date);
+    }
+
 }

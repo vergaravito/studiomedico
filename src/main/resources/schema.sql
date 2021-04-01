@@ -5,7 +5,7 @@ CREATE SEQUENCE IF NOT EXISTS incarichi_id_seq;
 CREATE SEQUENCE IF NOT EXISTS liquidatori_id_seq;
 CREATE SEQUENCE IF NOT EXISTS sedi_id_seq;
 CREATE SEQUENCE IF NOT EXISTS soggetti_id_seq;
-
+CREATE SEQUENCE IF NOT EXISTS appuntamenti_id_seq;
 
 
 
@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS public.soggetti
 CREATE TABLE IF NOT EXISTS public.incarichi
 (
     id numeric NOT NULL,
+    numero_incarico text COLLATE pg_catalog."default",
     tipo text COLLATE pg_catalog."default",
     id_assicurazione numeric,
     id_liquidatore numeric,

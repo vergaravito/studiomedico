@@ -138,7 +138,6 @@ export function Liquidatori(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Nome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Nome Liquidatore"
                                     defaultValue=""
@@ -153,7 +152,6 @@ export function Liquidatori(props) {
                             <Form.Group as={Row} controlId="formPlaintextAddress">
                                 <Form.Label> Cognome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Indirizzo Liquidatore"
                                     defaultValue=""

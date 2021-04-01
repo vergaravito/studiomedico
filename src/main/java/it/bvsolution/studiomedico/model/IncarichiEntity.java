@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Date;
 
 @Data
@@ -18,6 +17,9 @@ public class IncarichiEntity {
     @GeneratedValue(strategy=GenerationType.AUTO, generator="pk_sequence")
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "numero_incarico")
+    private String numero_incarico;
 
     @Column(name = "tipo")
     private String tipo;

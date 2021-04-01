@@ -185,7 +185,6 @@ export function Avvocati(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Nome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Nome Avvocato"
                                     defaultValue=""
@@ -199,7 +198,6 @@ export function Avvocati(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Cognome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Cognome Avvocato"
                                     defaultValue=""
@@ -213,7 +211,6 @@ export function Avvocati(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Titolo </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Titolo Avvocato"
                                     defaultValue=""
@@ -227,7 +224,6 @@ export function Avvocati(props) {
                             <Form.Group as={Row} controlId="formPlaintextAddress">
                                 <Form.Label> Indirizzo </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Indirizzo Avvocato"
                                     defaultValue=""
@@ -241,7 +237,6 @@ export function Avvocati(props) {
                             <Form.Group as={Row} controlId="formPlaintextCap">
                                 <Form.Label> CAP </Form.Label>
                                 <Form.Control
-                                    required
                                     type="number"
                                     placeholder="CAP Avvocato"
                                     defaultValue=""
@@ -282,7 +277,6 @@ export function Avvocati(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Telefono principale </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Telefono principale"
                                     defaultValue=""
@@ -304,6 +298,19 @@ export function Avvocati(props) {
                                 />
                                 <Form.Text className="text-muted">
                                 Inserisci il Telefono secondario
+                                </Form.Text>
+                            </Form.Group>
+                            <Form.Group as={Row} controlId="formPlaintextName">
+                                <Form.Label> Fax </Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Fax"
+                                    defaultValue=""
+                                    value={fax}
+                                    onChange={e => setFax(e.target.value)}
+                                />
+                                <Form.Text className="text-muted">
+                                Inserisci il fax
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextName">

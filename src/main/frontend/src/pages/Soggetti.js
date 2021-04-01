@@ -190,7 +190,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Nome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Nome Soggetto"
                                     defaultValue=""
@@ -204,7 +203,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Cognome </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Cognome Soggetto"
                                     defaultValue=""
@@ -218,7 +216,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Luogo di nascita </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Luogo di nascita"
                                     defaultValue=""
@@ -232,7 +229,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Data di nascita </Form.Label>
                                 <Form.Control
-                                    required
                                     type="date"
                                     placeholder="Data di nascita"
                                     defaultValue=""
@@ -246,7 +242,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextAddress">
                                 <Form.Label> Indirizzo </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Indirizzo Soggetto"
                                     defaultValue=""
@@ -261,7 +256,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextCap">
                                 <Form.Label> CAP </Form.Label>
                                 <Form.Control
-                                    required
                                     type="number"
                                     placeholder="CAP Soggetto"
                                     defaultValue=""
@@ -276,7 +270,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Telefono </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Telefono"
                                     defaultValue=""
@@ -290,7 +283,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Sesso </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="M/F"
                                     defaultValue=""
@@ -304,7 +296,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Email </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="email@dominio.es"
                                     defaultValue=""
@@ -318,7 +309,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Codice Fiscale </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Codice Fiscale"
                                     defaultValue=""
@@ -332,7 +322,6 @@ export function Soggetti(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Note </Form.Label>
                                 <Form.Control
-                                    required
                                     type="text"
                                     placeholder="Note"
                                     defaultValue=""
