@@ -24,6 +24,9 @@ public class AppuntamentiEntity {
     @Column(name = "data_appuntamento")
     private Date dataAppuntamento;
 
+    @Column(name = "ora_appuntamento")
+    private String oraAppuntamento;
+
     @Column(name = "durata")
     private int durata;
 

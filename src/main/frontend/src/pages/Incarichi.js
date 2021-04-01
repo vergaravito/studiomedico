@@ -314,6 +314,51 @@ export function Incarichi(props) {
         }, 1000);
     };
 
+    const getSoggettoSelected = (idSoggetto) => {
+        for (let index = 0; index < dataSog.length; index++) {
+            if(dataSog[index].id === idSoggetto){
+                return { value: dataSog[index].id, label: dataSog[index].cognome + " " + dataSog[index].nome + " - " + dataSog[index].datanascita.substring(0, 10)  }
+            }
+        }
+        return ""
+    };
+
+    const getAssicurazioneSelected = (idAssicurazione) => {
+        for (let index = 0; index < dataAss.length; index++) {
+            if(dataAss[index].id === idAssicurazione){
+                return { value: dataAss[index].id, label: dataAss[index].nome }
+            }
+        }
+        return ""
+    };
+
+    const getLiquidatoreSelected = (idLiquidatore) => {
+        for (let index = 0; index < dataLiq.length; index++) {
+            if(dataLiq[index].id === idLiquidatore){
+                return { value: dataLiq[index].id, label: dataLiq[index].cognome + " " + dataLiq[index].nome }
+            }
+        }
+        return ""
+    };
+
+    const getAvvocatoSelected = (idAvvocato) => {
+        for (let index = 0; index < dataAvv.length; index++) {
+            if(dataAvv[index].id === idAvvocato){
+                return { value: dataAvv[index].id, label: dataAvv[index].cognome + " " + dataAvv[index].nome }
+            }
+        }
+        return ""
+    };
+
+    const getDottoreSelected = (idDottore) => {
+        for (let index = 0; index < dataDot.length; index++) {
+            if(dataDot[index].id === idDottore){
+                return { value: dataDot[index].id, label: dataDot[index].cognome + " " + dataDot[index].nome }
+            }
+        }
+        return ""
+    };
+
     return (
         <div class="container">
             <div class="row">
@@ -419,7 +464,7 @@ export function Incarichi(props) {
                                     onChange={e => setDataSinistro(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">
-                                Inserisci il Data Sinistro
+                                Inserisci la Data Sinistro
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextName">
@@ -432,7 +477,7 @@ export function Incarichi(props) {
                                     onChange={e => setDataIncarico(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">
-                                Inserisci il Data Incarico
+                                Inserisci la Data Incarico
                                 </Form.Text>
                             </Form.Group>
                             <Form.Group controlId="exampleForm.SelectCustomSizeSm">
@@ -444,6 +489,7 @@ export function Incarichi(props) {
                                     defaultOptions={dataSog.map((soggetto, index) => (                                        
                                         { value: soggetto.id, label: soggetto.cognome + " " + soggetto.nome + " - " + soggetto.datanascita.substring(0, 10) }
                                     ))}
+                                    value={getSoggettoSelected(idSoggetto)}
                                     onChange={e => setIdSoggetto(e.value)}
                                 />
                             </Form.Group>
@@ -457,6 +503,7 @@ export function Incarichi(props) {
                                     defaultOptions={dataAss.map((assicurazione, index) => (                                        
                                         { value: assicurazione.id, label: assicurazione.nome }
                                     ))}
+                                    value={getAssicurazioneSelected(idAssicurazione)}
                                     onChange={e => setIdAssicurazione(e.value)}
                                 />
                             </Form.Group>
@@ -470,6 +517,7 @@ export function Incarichi(props) {
                                     defaultOptions={dataLiq.map((liquidatore, index) => (                                        
                                         { value: liquidatore.id, label: liquidatore.cognome + " " + liquidatore.nome }
                                     ))}
+                                    value={getLiquidatoreSelected(idLiquidatore)}
                                     onChange={e => setIdLiquidatore(e.value)}
                                 />
                             </Form.Group>
@@ -483,6 +531,7 @@ export function Incarichi(props) {
                                     defaultOptions={dataAvv.map((avvocato, index) => (                                        
                                         { value: avvocato.id, label: avvocato.cognome + " " + avvocato.nome }
                                     ))}
+                                    value={getAvvocatoSelected(idAvvocato)}
                                     onChange={e => setIdAvvocato(e.value)}
                                 />
                             </Form.Group>
@@ -496,6 +545,7 @@ export function Incarichi(props) {
                                     defaultOptions={dataDot.map((dottore, index) => (                                        
                                         { value: dottore.id, label: dottore.cognome + " " + dottore.nome }
                                     ))}
+                                    value={getDottoreSelected(idDottore)}
                                     onChange={e => setIdDottore(e.value)}
                                 />
                             </Form.Group>

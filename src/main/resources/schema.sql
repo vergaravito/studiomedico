@@ -132,6 +132,7 @@ CREATE TABLE IF NOT EXISTS public.appuntamenti
     id numeric NOT NULL,
     id_studio numeric NOT NULL,
     data_appuntamento timestamp without time zone,
+    ora_appuntamento text COLLATE pg_catalog."default",
     durata numeric,
     id_incarico numeric NOT NULL,
     note text COLLATE pg_catalog."default",
