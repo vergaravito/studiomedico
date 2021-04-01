@@ -23,7 +23,8 @@ export function Soggetti(props) {
     const [codicefiscale, setCodicefiscale] = useState("");
     
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
-    
+    const [soggettoSelected, setSoggettoSelected] = useState("");
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,6 +36,8 @@ export function Soggetti(props) {
 
     const [showSuccessDeleteAlert, isShowSuccessDeleteAlert]= useState(false);
     const [showFailDeleteAlert, isShowFailDeleteAlert]= useState(false);
+
+    const [showDetails, isShowDetails] = useState(false);
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
@@ -135,17 +138,18 @@ export function Soggetti(props) {
                     {soggetto.datanascita}
                 </Moment>
             </td>
-            <td>{soggetto.indirizzo}</td>
-            <td>{soggetto.cap}</td>
             <td>{soggetto.telefono}</td>
-            <td>{soggetto.sesso}</td>
-            <td>{soggetto.note}</td>
             <td>{soggetto.email}</td>
-            <td>{soggetto.codicefiscale}</td>
+            <td><Button onClick={() => renderDetails(soggetto)}><FaIcons.FaPersonBooth/></Button></td>
             <td><Button onClick={() => handleEdit(soggetto)}><FaIcons.FaEdit/></Button></td>
             <td><Button onClick={() => handleDelete(soggetto)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
+    }
+
+    const renderDetails = (soggetto) => {
+        setSoggettoSelected(soggetto);
+        isShowDetails(true);
     }
 
     const formatDate = (date) => {
@@ -169,13 +173,9 @@ export function Soggetti(props) {
                             <th>Cognome</th>
                             <th>Luogo di Nascita</th>
                             <th>Data di Nascita</th>
-                            <th>Indirizzo</th>
-                            <th>CAP</th>
-                            <th>Telfono</th>
-                            <th>Sesso</th>
-                            <th>Note</th>
+                            <th>Telefono</th>
                             <th>Email</th>
-                            <th>Codice Fiscale</th>
+                            <th>Apri Dettaglio</th>
                             <th>Modifica</th>
                             <th>Elimina</th>
                             </tr>
@@ -186,7 +186,96 @@ export function Soggetti(props) {
                     </Table>
                 </div>
             </div>
-            
+            {showDetails && 
+            <div class="container">
+                <Button onClick={() => isShowDetails(false)}><FaIcons.FaWindowClose/></Button>
+                <div class="row">
+                    <div class="col">
+                        <p>Nome:</p>
+                        <p class="detail-box">{soggettoSelected.nome}</p>
+                    </div>
+                    <div class="col">
+                        <p>Cognome:</p>
+                        <p class="detail-box">{soggettoSelected.cognome}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>Luogo di Nascita:</p>
+                            <p class="detail-box">{soggettoSelected.luogonascita}</p>
+                    </div>
+                    <div class="col">
+                    <p>Data di Nascita:</p>
+                        <p class="detail-box">
+                        <Moment format="DD/MM/YY">
+                            {soggettoSelected.datanascita}
+                        </Moment>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>Indirizzo:</p>
+                        <p class="detail-box">
+                        {soggettoSelected.indirizzo}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>CAP:
+                        </p>
+                        <p class="detail-box">
+                        {soggettoSelected.cap}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    <p>Telefono:
+                    </p>
+                    <p class="detail-box">
+                        {soggettoSelected.telefono}
+                    </p>
+                    </div>
+                    <div class="col">
+                        <p>Email:
+                            </p>
+                        <p class="detail-box">
+                        {soggettoSelected.email}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    <p>Sesso:
+                            </p>
+                    <p class="detail-box"> 
+                        {soggettoSelected.sesso}
+                    </p>
+                    </div>
+                    <div class="col">
+                    <p>Codice Fiscale:
+                            </p>
+                    <p class="detail-box">
+                        {soggettoSelected.codicefiscale}</p>
+                    </div>
+                    <div class="col">
+                    <p>Note:
+                            </p>
+                    <p class="detail-box">
+                        {soggettoSelected.note}
+                    </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+
+                        <Button onClick={() => handleEdit(soggettoSelected)}><FaIcons.FaEdit/></Button>
+                    
+                        <Button onClick={() => handleDelete(soggettoSelected)}><FaIcons.FaTrash/></Button>
+                    </div>
+                </div>
+            </div>
+            }
             <div class="row">
                 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
                 <h1 class="display-5 py-2 text-truncate">{tipoins}</h1>

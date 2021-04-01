@@ -31,3 +31,8 @@
 .container {
   margin-top: 60px;
 }
+
+.detail-box {
+  padding: 2%;
+  background: aliceblue;
+}
