@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import * as FaIcons from "react-icons/fa";
 
 export function Studi(props) {
     const [postId, setPostId] = useState(null);
@@ -102,8 +103,8 @@ export function Studi(props) {
             <td>{studio.nome}</td>
             <td>{studio.indirizzo}</td>
             <td>{studio.cap}</td>
-            <td><Button onClick={() => handleEdit(studio)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(studio)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(studio)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(studio)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }

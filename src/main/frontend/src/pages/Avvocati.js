@@ -4,6 +4,7 @@ import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import * as FaIcons from "react-icons/fa";
 
 export function Avvocati(props) {
     const [postId, setPostId] = useState(null);
@@ -136,8 +137,8 @@ export function Avvocati(props) {
             <td>{avvocato.telefono2}</td>
             <td>{avvocato.fax}</td>
             <td>{avvocato.note}</td>
-            <td><Button onClick={() => handleEdit(avvocato)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(avvocato)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(avvocato)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(avvocato)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }

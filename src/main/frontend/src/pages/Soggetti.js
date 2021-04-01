@@ -4,6 +4,7 @@ import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import * as FaIcons from "react-icons/fa";
 
 export function Soggetti(props) {
     const [postId, setPostId] = useState(null);
@@ -80,7 +81,7 @@ export function Soggetti(props) {
         setName(soggetto.nome);
         setCognome(soggetto.cognome);
         setLuogonascita(soggetto.luogonascita);
-        setDatanascita(soggetto.datanascita);
+        setDatanascita(new Date(soggetto.datanascita));
         setIndirizzo(soggetto.indirizzo);
         setCap(soggetto.cap);
         setTelefono(soggetto.telefono);
@@ -141,10 +142,17 @@ export function Soggetti(props) {
             <td>{soggetto.note}</td>
             <td>{soggetto.email}</td>
             <td>{soggetto.codicefiscale}</td>
-            <td><Button onClick={() => handleEdit(soggetto)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(soggetto)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(soggetto)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(soggetto)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
+    }
+
+    const formatDate = (date) => {
+        if(date != null && date != ""){
+            return new Date(date).toISOString().substring(0,10);
+        }
+        return null;
     }
 
     return (
@@ -231,8 +239,7 @@ export function Soggetti(props) {
                                 <Form.Control
                                     type="date"
                                     placeholder="Data di nascita"
-                                    defaultValue=""
-                                    value={datanascita}
+                                    value={formatDate(datanascita)}
                                     onChange={e => setDatanascita(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">

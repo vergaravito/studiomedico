@@ -3,11 +3,25 @@
     height: 80px;
     display: flex;
     align-items: center;
+    height: 3.5rem;
+}
+
+.position-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
 }
 
 .menu-bars {
-    margin-left: 2rem;
-    font-size: 2rem;
+    margin-left: .5rem;
+    font-size: 1.5rem;
+    background: none;
+}
+
+.menu-close {
+    margin-left: 1.5rem;
+    font-size: 1.7rem;
     background: none;
 }
 
@@ -22,6 +36,7 @@
     left: -100%;
     transition: 850ms;
     overflow: auto;
+    z-index: 10;
 }
 
 .nav-menu.active {

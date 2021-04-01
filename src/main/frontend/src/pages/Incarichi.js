@@ -4,8 +4,10 @@ import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import * as FaIcons from "react-icons/fa";
 
 import AsyncSelect from 'react-select/async';
+import { FormattedDate } from 'react-intl';
 
 export function Incarichi(props) {
     const [postId, setPostId] = useState(null);
@@ -20,8 +22,8 @@ export function Incarichi(props) {
     const [idAvvocato, setIdAvvocato] = useState("");
     const [nSinistro, setNSinistro] = useState("");
     const [idDottore, setIdDottore] = useState("");
-    const [dataSinistro, setDataSinistro] = useState("");
-    const [dataIncarico, setDataIncarico] = useState("");
+    const [dataSinistro, setDataSinistro] = useState(new Date());
+    const [dataIncarico, setDataIncarico] = useState(new Date());
     const [note, setNote] = useState("");
     
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
@@ -199,8 +201,8 @@ export function Incarichi(props) {
                 </Moment>
             </td>
             <td>{incarico.note}</td>
-            <td><Button onClick={() => handleEdit(incarico)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(incarico)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(incarico)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(incarico)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }
@@ -358,7 +360,12 @@ export function Incarichi(props) {
         }
         return ""
     };
-
+    const formatDate = (date) => {
+        if(date != null && date != ""){
+            return new Date(date).toISOString().substring(0,10);
+        }
+        return null;
+    }
     return (
         <div class="container">
             <div class="row">
@@ -459,8 +466,7 @@ export function Incarichi(props) {
                                 <Form.Control
                                     type="date"
                                     placeholder="Data Sinistro"
-                                    defaultValue=""
-                                    value={dataSinistro}
+                                    value={formatDate(dataSinistro)}
                                     onChange={e => setDataSinistro(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">
@@ -472,8 +478,7 @@ export function Incarichi(props) {
                                 <Form.Control
                                     type="date"
                                     placeholder="Data Incarico"
-                                    defaultValue=""
-                                    value={dataIncarico}
+                                    value={formatDate(dataIncarico)}
                                     onChange={e => setDataIncarico(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">

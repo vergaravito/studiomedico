@@ -4,7 +4,6 @@ import './App.css';
 import Navbar from "./components/Navbar";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Home from './pages/Home';
-import Appuntamenti from './pages/Appuntamenti';
 import Assicurazioni from './pages/Assicurazioni';
 import Avvocati from './pages/Avvocati';
 import Dottori from './pages/Dottori';
@@ -23,7 +22,6 @@ function App() {
         <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/appuntamenti' component={Appuntamenti} />
           <Route path='/incarichi' component={Incarichi} />
           <Route path='/soggetti' component={Soggetti} />
           <Route path='/dottori' component={Dottori} />

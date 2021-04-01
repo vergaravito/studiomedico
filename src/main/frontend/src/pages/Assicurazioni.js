@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Moment from 'react-moment';
+import * as FaIcons from "react-icons/fa";
 import 'moment-timezone';
 
 export function Assicurazioni(props) {
@@ -128,8 +128,8 @@ export function Assicurazioni(props) {
             <td>{assicurazione.partitaiva}</td>
             <td>{assicurazione.codicefiscale}</td>
             <td>{assicurazione.note}</td>
-            <td><Button onClick={() => handleEdit(assicurazione)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(assicurazione)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(assicurazione)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(assicurazione)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }

@@ -135,9 +135,10 @@ export function Appuntamenti(props) {
         return (
             <tr key={appuntamento.id}>
             <td>{getNomeStudio(appuntamento.idStudio)}</td>
-            <td><Moment format="DD/MM/YY HH:mm">
+            <td><Moment format="DD/MM/YY">
                     {appuntamento.dataAppuntamento}
                 </Moment></td>
+            <td>{appuntamento.oraAppuntamento}</td>
             <td>{appuntamento.durata} minuti</td>
             <td>{getNumeroIncarico(appuntamento.idIncarico)}</td>
             <td>{appuntamento.note}</td>
@@ -207,6 +208,7 @@ export function Appuntamenti(props) {
                             <tr>
                             <th>Studio</th>
                             <th>Data Appuntamento</th>
+                            <th>Ora</th>
                             <th>Durata</th>
                             <th>Incarico</th>
                             <th>Note</th>

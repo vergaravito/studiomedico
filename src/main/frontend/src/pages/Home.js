@@ -4,6 +4,7 @@ import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import * as FaIcons from "react-icons/fa";
 
 import Calendar from 'react-calendar'
 import '../../node_modules/react-calendar/dist/Calendar.css';
@@ -99,7 +100,7 @@ export function Home(props) {
         });
     }
     const handleDelete = (appuntamento) => {
-        var r = window.confirm(`Confermi di eliminare appuntamento in data ${appuntamento.dataAppuntamento} alle ore ${appuntamento.oraAppuntamento} per l'incarico ${appuntamento.idIncarico} `);
+        var r = window.confirm(`Confermi di eliminare appuntamento in data ${appuntamento.dataAppuntamento.substring(0,10)} alle ore ${appuntamento.oraAppuntamento} per l'incarico ${getNumeroIncarico(appuntamento.idIncarico)} `);
         if (r === true) {
             const deleteOptions = {
                 method: 'POST',
@@ -156,8 +157,8 @@ export function Home(props) {
 
         setId("");
         setIdStudio("");
-        setDataAppuntamento("");
-        setDurata("");
+        setDataAppuntamento(new Date());
+        setDurata(15);
         setIdIncarico("");
         setNote("");
 
@@ -185,8 +186,8 @@ export function Home(props) {
                 {appuntamento.durata} minuti
             </td>
             <td>{appuntamento.note}</td>
-            <td><Button onClick={() => handleEdit(appuntamento)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(appuntamento)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(appuntamento)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(appuntamento)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }
@@ -287,13 +288,21 @@ export function Home(props) {
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
+    const formatDate = (date) => {
+        if(date != null && date != ""){
+            return new Date(date).toISOString().substring(0,10);
+        }
+        return null;
+    }
+
     return (
         <div class="container">
             <div class="row">
                 <div class="col-sm-10 mx-auto text-center form p-4">
                     <h3 class="display-5 py-2 text-truncate">Appuntamenti di {value.toLocaleString("it-IT", options)}</h3>
                     <Calendar
-                        className="react-calendar"
+                        className={['c1','c2']}
+                        style="margin: auto;"
                         locale="it-IT"
                         onChange={onChange}
                         value={value}
@@ -333,7 +342,8 @@ export function Home(props) {
                     </div>
                     
                     <div class="row">
-                    <div class="col-sm-10 mx-auto text-center form p-4">
+                    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+                        <h1 class="display-5 py-2 text-truncate">{tipoins}</h1>
                         <Form onSubmit={handleSubmit}>
 
                             <Form.Group as={Row} controlId="formPlaintextName">
@@ -353,8 +363,9 @@ export function Home(props) {
                             <Form.Group as={Row} controlId="formPlaintextName">
                                 <Form.Label> Data </Form.Label>
                                 <Form.Control
+                                    required
                                     type="date"
-                                    value={dataAppuntamento}
+                                    value={formatDate(dataAppuntamento)}
                                     onChange={e => setDataAppuntamento(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">

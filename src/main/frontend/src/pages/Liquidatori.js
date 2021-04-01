@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import * as FaIcons from "react-icons/fa";
 
 export function Liquidatori(props) {
     const [postId, setPostId] = useState(null);
@@ -98,8 +99,8 @@ export function Liquidatori(props) {
             <tr key={liquidatore.id}>
             <td>{liquidatore.nome}</td>
             <td>{liquidatore.cognome}</td>
-            <td><Button onClick={() => handleEdit(liquidatore)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(liquidatore)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(liquidatore)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(liquidatore)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }

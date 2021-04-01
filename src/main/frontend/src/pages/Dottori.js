@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import * as FaIcons from "react-icons/fa";
 
 export function Dottori(props) {
     const [postId, setPostId] = useState(null);
@@ -97,8 +98,8 @@ export function Dottori(props) {
             <tr key={dottore.id}>
             <td>{dottore.nome}</td>
             <td>{dottore.cognome}</td>
-            <td><Button onClick={() => handleEdit(dottore)}>Edit</Button></td>
-            <td><Button onClick={() => handleDelete(dottore)}>Delete</Button></td>
+            <td><Button onClick={() => handleEdit(dottore)}><FaIcons.FaEdit/></Button></td>
+            <td><Button onClick={() => handleDelete(dottore)}><FaIcons.FaTrash/></Button></td>
             </tr>
         )
     }

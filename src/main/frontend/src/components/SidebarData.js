@@ -13,12 +13,6 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Appuntamenti',
-        path: '/appuntamenti',
-        icon: <BiIcons.BiCalendar/>,
-        cName: 'nav-text'
-    },
-    {
         title: 'Incarichi',
         path: '/incarichi',
         icon: <BiIcons.BiClipboard/>,
