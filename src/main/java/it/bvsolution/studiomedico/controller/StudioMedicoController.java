@@ -42,6 +42,9 @@ public class StudioMedicoController {
     @Autowired
     StudioMedicoServices studioMedicoServices;
 
+    @Autowired
+    DottoriStudiRepository dottoriStudiRepository;
+
     //STUDI CRUD
     @GetMapping(value = "/fetch/studi")
     public List<SediEntity> fetchStudi(){
@@ -139,6 +142,11 @@ public class StudioMedicoController {
         return liquidatoriRepository.findAll();
     }
 
+    @GetMapping(value = "/get/liquidatori/byassicurazione")
+    public List<LiquidatoriEntity> fetchLiquidatori(@RequestParam(name = "idAssicurazione") String idAssicurazione){
+        return liquidatoriRepository.findByIdAssicurazione(Long.parseLong(idAssicurazione));
+    }
+
     @PostMapping(value="/insert/liquidatore", consumes = "application/json")
     public LiquidatoriEntity insertLiquidatore(@RequestBody LiquidatoriEntity liquidatore) {
         return liquidatoriRepository.save(liquidatore);
@@ -181,6 +189,11 @@ public class StudioMedicoController {
     @GetMapping(value = "/fetch/incarichi")
     public List<IncarichiEntity> fetchIncarichi(){
         return incarichiReposirory.findAll();
+    }
+
+    @GetMapping(value = "/get/incarichi/bysoggetto")
+    public List<IncarichiEntity> getIncarichiBySoggetto(@RequestParam(name = "idSoggetto") String idSoggetto){
+        return incarichiReposirory.findByIdSoggetto(Long.parseLong(idSoggetto));
     }
 
     @PostMapping(value="/insert/incarico", consumes = "application/json")
@@ -229,4 +242,11 @@ public class StudioMedicoController {
         return appuntamentiRepository.findByDataAppuntamento(date);
     }
 
+    //DOTTORI E STUDI
+    @PostMapping(value = "/join/dottore/studio")
+    public List<DottoriStudiEntity> joinDottoriStudi(@RequestBody DottoriStudiEntity dottoriStudi){
+        if(dottoriStudi.getIdDottore() != null){
+            
+        }
+    }
 }

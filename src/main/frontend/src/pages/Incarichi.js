@@ -17,7 +17,6 @@ export function Incarichi(props) {
     const [tipo, setTipo] = useState("");
     const [idAssicurazione, setIdAssicurazione] = useState("");
     const [idLiquidatore, setIdLiquidatore] = useState("");
-    const [ambito, setAmbito] = useState("");
     const [idSoggetto, setIdSoggetto] = useState("");
     const [idAvvocato, setIdAvvocato] = useState("");
     const [nSinistro, setNSinistro] = useState("");
@@ -27,12 +26,17 @@ export function Incarichi(props) {
     const [note, setNote] = useState("");
     
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
-    
+    const [tipiIncarico, setTipiIncarico] = useState([
+                                                        { value: "Infortuni", label: "Infortuni" },
+                                                        { value: "Malattia", label: "Malattia" },
+                                                        { value: "RCA", label: "RCA" },
+                                                        { value: "RCG", label: "RCG" }
+                                                    ]);
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: id, numero_incarico: numero_incarico, tipo: tipo, id_assicurazione: idAssicurazione,
-            id_liquidatore: idLiquidatore, ambito: ambito, id_soggetto: idSoggetto,
+            id_liquidatore: idLiquidatore, idSoggetto: idSoggetto,
             id_avvocato: idAvvocato, n_sinistro: nSinistro, id_dottore: idDottore,
             data_sinistro: dataSinistro, data_incarico: dataIncarico, note: note })
     };
@@ -64,7 +68,7 @@ export function Incarichi(props) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: incarico.id, numero_incarico: incarico.numero_incarico, tipo: incarico.tipo, id_assicurazione: incarico.id_assicurazione,
-                    id_liquidatore: incarico.id_liquidatore, ambito: incarico.ambito, id_soggetto: incarico.id_soggetto,
+                    id_liquidatore: incarico.id_liquidatore, idSoggetto: incarico.idSoggetto,
                     id_avvocato: incarico.id_avvocato, n_sinistro: incarico.n_sinistro, id_dottore: incarico.id_dottore,
                     data_sinistro: incarico.data_sinistro, data_incarico: incarico.data_incarico, note: incarico.note })
             };
@@ -92,8 +96,7 @@ export function Incarichi(props) {
         setTipo(incarico.tipo);
         setIdAssicurazione(incarico.id_assicurazione);
         setIdLiquidatore(incarico.id_liquidatore);
-        setAmbito(incarico.ambito);
-        setIdSoggetto(incarico.id_soggetto);
+        setIdSoggetto(incarico.idSoggetto);
         setIdAvvocato(incarico.id_avvocato);
         setNSinistro(incarico.n_sinistro);
         setIdDottore(incarico.id_dottore);
@@ -111,7 +114,6 @@ export function Incarichi(props) {
         setNumeroIncarico("");
         setIdAssicurazione("");
         setIdLiquidatore("");
-        setAmbito("");
         setIdSoggetto("");
         setIdAvvocato("");
         setNSinistro("");
@@ -146,6 +148,17 @@ export function Incarichi(props) {
     const fetchLiquidatori = () => {
         axios.get("http://localhost:8080/fetch/liquidatori").then( res => {
             setDataLiq(res.data);
+        });
+    };
+
+    const getLiquidatoriAssociati = (idAssicurazione) => {
+        setIdAssicurazione(idAssicurazione);
+        axios.get("http://localhost:8080/get/liquidatori/byassicurazione?idAssicurazione=" + idAssicurazione).then( res => {
+            console.log(res);
+            setDataLiq(res.data);
+            if(res.data.length === 1){
+                setIdLiquidatore(res.data[0].id);
+            }
         });
     };
 
@@ -185,8 +198,7 @@ export function Incarichi(props) {
             <td>{incarico.tipo}</td>
             <td>{getNomeAssicurazione(incarico.id_assicurazione)}</td>
             <td>{getNomeLiquidatore(incarico.id_liquidatore)}</td>
-            <td>{incarico.ambito}</td>
-            <td>{getNomeSoggetto(incarico.id_soggetto)}</td>
+            <td>{getNomeSoggetto(incarico.idSoggetto)}</td>
             <td>{incarico.id_avvocato}</td>
             <td>{incarico.n_sinistro}</td>
             <td>{getNomeDottore(incarico.id_dottore)}</td>
@@ -234,7 +246,7 @@ export function Incarichi(props) {
         for (let index = 0; index < dataSog.length; index++) {
             const element = dataSog[index].id;
             if(element === id){
-                return dataSog[index].cognome + " " + dataLiq[index].nome;
+                return dataSog[index].cognome + " " + dataSog[index].nome;
             }
         }
         return nome;
@@ -245,7 +257,7 @@ export function Incarichi(props) {
         for (let index = 0; index < dataDot.length; index++) {
             const element = dataDot[index].id;
             if(element === id){
-                return dataDot[index].cognome + " " + dataLiq[index].nome;
+                return dataDot[index].cognome + " " + dataDot[index].nome;
             }
         }
         return nome;
@@ -380,13 +392,13 @@ export function Incarichi(props) {
                             <th>Tipo</th>
                             <th>Assicurazione</th>
                             <th>Liquidatore</th>
-                            <th>Ambito</th>
                             <th>Soggetto</th>
                             <th>Avvocato</th>
                             <th>N. Sinistro</th>
                             <th>Dottore</th>
                             <th>Data Sinistro</th>
                             <th>Data Incarico</th>
+                            <th>Note</th>
                             <th>Modifica</th>
                             <th>Elimina</th>
                             </tr>
@@ -420,31 +432,17 @@ export function Incarichi(props) {
                                 Numero incarico autogenerato in fase di inserimento
                                 </Form.Text>
                             </Form.Group>
-                            <Form.Group as={Row} controlId="formPlaintextName">
-                                <Form.Label> Tipo </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Tipo Incarico"
-                                    defaultValue=""
-                                    value={tipo}
-                                    onChange={e => setTipo(e.target.value)}
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Tipo Incarico </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona il tipo Incarico"
+                                    defaultOptions={tipiIncarico}
+                                    value={{value: tipo, label: tipo}}
+                                    onChange={e => setTipo(e.value)}
                                 />
                                 <Form.Text className="text-muted">
-                                Inserisci il tipo Incarico
-                                </Form.Text>
-                            </Form.Group>
-
-                            <Form.Group as={Row} controlId="formPlaintextName">
-                                <Form.Label> Ambito </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Ambito Incarico"
-                                    defaultValue=""
-                                    value={ambito}
-                                    onChange={e => setAmbito(e.target.value)}
-                                />
-                                <Form.Text className="text-muted">
-                                Inserisci ambito Incarico
+                                Seleziona il tipo Incarico
                                 </Form.Text>
                             </Form.Group>
 
@@ -453,7 +451,6 @@ export function Incarichi(props) {
                                 <Form.Control
                                     type="text"
                                     placeholder="N. Sinistro"
-                                    defaultValue=""
                                     value={nSinistro}
                                     onChange={e => setNSinistro(e.target.value)}
                                 />
@@ -509,7 +506,7 @@ export function Incarichi(props) {
                                         { value: assicurazione.id, label: assicurazione.nome }
                                     ))}
                                     value={getAssicurazioneSelected(idAssicurazione)}
-                                    onChange={e => setIdAssicurazione(e.value)}
+                                    onChange={e => getLiquidatoriAssociati(e.value)}
                                 />
                             </Form.Group>
 

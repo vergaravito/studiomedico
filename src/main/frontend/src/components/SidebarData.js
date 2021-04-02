@@ -37,12 +37,6 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Incidenti',
-        path: '/incidenti',
-        icon: <BiIcons.BiShieldX/>,
-        cName: 'nav-text'
-    },
-    {
         title: 'Assicurazioni',
         path: '/assicurazioni',
         icon: <BiIcons.BiShieldQuarter/>,

@@ -12,4 +12,5 @@ public interface LiquidatoriRepository extends CrudRepository<LiquidatoriEntity,
 
     public Optional<LiquidatoriEntity> findByNomeAndCognome(String nome,String cognome);
     public List<LiquidatoriEntity> findAll();
+    public List<LiquidatoriEntity> findByIdAssicurazione(Long idAssicurazione);
 }

@@ -19,6 +19,8 @@ export function Home(props) {
     const [oraAppuntamento, setOraAppuntamento] = useState("");
     const [durata, setDurata] = useState(15);
     const [idIncarico, setIdIncarico] = useState("");
+    const [idSoggetto, setIdSoggetto] = useState("");
+
     const [note, setNote] = useState("");
     const [value, onChange] = useState(new Date());
 
@@ -41,6 +43,17 @@ export function Home(props) {
         axios.get("http://localhost:8080/fetch/incarichi").then( res => {
             console.log(res);
             setDataIncarichi(res.data);
+        });
+    };
+
+    const getIncarichiAssociati = (idSoggetto) => {
+        setIdSoggetto(idSoggetto);
+        axios.get("http://localhost:8080/get/incarichi/bysoggetto?idSoggetto=" + idSoggetto).then( res => {
+            console.log(res);
+            setDataIncarichi(res.data);
+            if(res.data.length === 1){
+                setIdIncarico(res.data[0].id);
+            }
         });
     };
 
@@ -78,6 +91,7 @@ export function Home(props) {
     };
     
     const getAppuntamenti = (value, event) => {
+        setDataAppuntamento(new Date(moment(value.toISOString()).format('YYYY-MM-DD')));
         getAppuntamentoByDate(value);
     }
     const [showSuccessAlert, isShowSuccessAlert]= useState(false);
@@ -233,7 +247,7 @@ export function Home(props) {
         for (let index = 0; index < dataIncarichi.length; index++) {
             if(dataIncarichi[index].id === idIncarico){
                 for (let index = 0; index < dataSog.length; index++) {
-                    if(dataSog[index].id === dataIncarichi[index].id_soggetto){
+                    if(dataSog[index].id === dataIncarichi[index].idSoggetto){
                         return dataSog[index].cognome + " " +  dataSog[index].nome;
                     }
                 }
@@ -286,6 +300,28 @@ export function Home(props) {
         }, 1000);
     };
 
+    const filterSoggetti = (inputValue) => {
+        return dataSog.map((soggetto, index) => (                                        
+            { value: soggetto.id, label: soggetto.cognome + " " + soggetto.nome + " - " + soggetto.datanascita.substring(0, 10)}
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadSoggetti = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterSoggetti(inputValue));
+        }, 1000);
+    };
+
+    const getSoggettoSelected = (idSoggetto) => {
+        for (let index = 0; index < dataSog.length; index++) {
+            if(dataSog[index].id === idSoggetto){
+                return { value: dataSog[index].id, label: dataSog[index].cognome + " " + dataSog[index].nome + " - " + dataSog[index].datanascita.substring(0, 10)  }
+            }
+        }
+        return ""
+    };
+
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
     const formatDate = (date) => {
@@ -296,14 +332,13 @@ export function Home(props) {
     }
 
     return (
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-10 mx-auto text-center form p-4">
-                    <h3 class="display-5 py-2 text-truncate">Appuntamenti di {value.toLocaleString("it-IT", options)}</h3>
+        <div className="container">
+            <div className="row">
+                <div className="col-sm-10 mx-auto text-center form p-4">
+                    <h3 className="display-5 py-2 text-truncate">Appuntamenti di {value.toLocaleString("it-IT", options)}</h3>
                     <Calendar
                         className={['c1','c2']}
                         style="margin: auto;"
-                        locale="it-IT"
                         onChange={onChange}
                         value={value}
                         onClickDay={getAppuntamenti}
@@ -313,8 +348,8 @@ export function Home(props) {
                     </div>
                     </div>
 
-                    <div class="row">
-                    <div class="col-sm-10 mx-auto text-center form p-4">
+                    <div className="row">
+                    <div className="col-sm-10 mx-auto text-center form p-4">
                     { appuntamentiNotEmpty ? (
                         <Table striped condensed hover>
                             <thead>
@@ -341,9 +376,9 @@ export function Home(props) {
                     </div>
                     </div>
                     
-                    <div class="row">
-                    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
-                        <h1 class="display-5 py-2 text-truncate">{tipoins}</h1>
+                    <div className="row">
+                    <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+                        <h1 className="display-5 py-2 text-truncate">{tipoins}</h1>
                         <Form onSubmit={handleSubmit}>
 
                             <Form.Group as={Row} controlId="formPlaintextName">
@@ -351,7 +386,6 @@ export function Home(props) {
                                 <Form.Control
                                     type="number"
                                     placeholder="15"
-                                    defaultValue=""
                                     value={durata}
                                     onChange={e => setDurata(e.target.value)}
                                 />
@@ -378,7 +412,6 @@ export function Home(props) {
                                 <Form.Control
                                     type="text"
                                     placeholder="Ora appuntamento"
-                                    defaultValue=""
                                     value={oraAppuntamento}
                                     onChange={e => setOraAppuntamento(e.target.value)}
                                 />
@@ -402,6 +435,20 @@ export function Home(props) {
                             </Form.Group>
 
                             <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Soggetto </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Soggetto"
+                                    loadOptions={loadSoggetti}
+                                    defaultOptions={dataSog.map((soggetto, index) => (
+                                        { value: soggetto.id, label: soggetto.cognome + " " + soggetto.nome + " - " + soggetto.datanascita.substring(0, 10) }
+                                    ))}
+                                    value={getSoggettoSelected(idSoggetto)}
+                                    onChange={e => getIncarichiAssociati(e.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
                                 <Form.Label> Incarico </Form.Label>
                                 <AsyncSelect
                                     cacheOptions
@@ -420,7 +467,6 @@ export function Home(props) {
                                 <Form.Control
                                     type="text"
                                     placeholder="Note Incarico"
-                                    defaultValue=""
                                     value={note}
                                     onChange={e => setNote(e.target.value)}
                                 />

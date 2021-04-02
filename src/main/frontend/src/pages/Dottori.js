@@ -3,6 +3,7 @@ import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as FaIcons from "react-icons/fa";
+import AsyncSelect from 'react-select/async';
 
 export function Dottori(props) {
     const [postId, setPostId] = useState(null);
@@ -10,7 +11,11 @@ export function Dottori(props) {
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [cognome, setCognome] = useState("");
-    
+    const [idStudio, setIdStudio] = useState("");
+
+    const [listStudi, setListStudi] = useState("");
+    const [dataStudi, setDataStudi] = useState([]);
+
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
     
     const requestOptions = {
@@ -28,6 +33,28 @@ export function Dottori(props) {
     const handleSubmit = (evt) => {
         evt.preventDefault();
         fetch('http://localhost:8080/insert/dottore', requestOptions)
+            .then(response => {
+                response.json()
+                console.log(response.data)
+            })
+            .then(json => {
+                isShowSuccessAlert(true);
+                clearForm();
+                fetchDottori();
+              })
+            .catch(err => {
+                isShowFailAlert(true);
+            });
+    }
+
+    const requestOptionsDottoreStudio = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(listStudi)
+    };
+
+    const associaDottoreStudio = () => {
+        fetch('http://localhost:8080/join/dottore/studio', requestOptionsDottoreStudio)
             .then(response => response.json())
             .then(json => {             
                 isShowSuccessAlert(true);
@@ -38,6 +65,7 @@ export function Dottori(props) {
                 isShowFailAlert(true);
             });
     }
+
     const handleDelete = (dottore) => {
         var r = window.confirm(`Confermi di eliminare il dottore: ${dottore.nome} , ${dottore.cognome} `);
         if (r === true) {
@@ -86,9 +114,16 @@ export function Dottori(props) {
             setData(res.data);
         });
     };
+    
+    const fetchStudi = () => {
+        axios.get("http://localhost:8080/fetch/studi").then( res => {
+            setDataStudi(res.data);
+        });
+    };
 
     useEffect(() => {
         fetchDottori();
+        fetchStudi();
     }, []);
 
     let dottoriArray = data;
@@ -104,13 +139,40 @@ export function Dottori(props) {
         )
     }
 
+    const filterStudi = (inputValue) => {
+        return dataStudi.map((studio, index) => (                                        
+            { value: studio.id, label: studio.nome }
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadStudi = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterStudi(inputValue));
+        }, 1000);
+    };
+
+    const setListStudiToUpdate = (e) => {
+        if(e !== null){
+            setListStudi(e.map((studio, index) =>(
+                    { id: null, idStudio: studio.value, idDottore: id }
+                    ))
+            );
+            console.log(e.map((studio, index) =>(
+                { id: null, idStudio: studio.value, idDottore: id }
+                )));
+        } else {
+            setListStudi([]);
+        }
+    };
+
     return (
         <div class="container">
             <div class="row">
                 <div class="col-sm-10 mx-auto text-center form p-4">
                 <h1 class="display-5 py-2 text-truncate">Elenco Dottori</h1>
                 { showSuccessDeleteAlert && <Alert idx="1" variant="success">Dottore eliminato con successo</Alert>}
-                { showFailDeleteAlert && <Alert idx="2" variant="danger">Eliminazione Dottore fallita</Alert> }
+                { showFailDeleteAlert && <Alert idx="2" variant="danger">Eliminazione dottore fallita</Alert> }
                     <Table striped condensed hover>
                         <thead>
                             <tr>
@@ -140,12 +202,11 @@ export function Dottori(props) {
                                 <Form.Control
                                     type="text"
                                     placeholder="Nome Dottore"
-                                    defaultValue=""
                                     value={name}
                                     onChange={e => setName(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">
-                                Inserisci il nome Dottore
+                                Inserisci il nome dottore
                                 </Form.Text>
                             </Form.Group>
 
@@ -153,14 +214,27 @@ export function Dottori(props) {
                                 <Form.Label> Cognome </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Indirizzo Dottore"
-                                    defaultValue=""
+                                    placeholder="Cognome Dottore"
                                     value={cognome}
                                     onChange={e => setCognome(e.target.value)}
                                 />
                                 <Form.Text className="text-muted">
-                                Inserisci il cognome Dottore
+                                Inserisci il cognome dottore
                                 </Form.Text>
+                            </Form.Group>
+
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Studi </Form.Label>
+                                <AsyncSelect
+                                    isMulti
+                                    cacheOptions
+                                    placeholder="Seleziona uno o più studi"
+                                    loadOptions={loadStudi}
+                                    defaultOptions={dataStudi.map((studio, index) => (                                        
+                                        { value: studio.id, label: studio.nome }
+                                    ))}
+                                    onChange={(e) => setListStudiToUpdate(e)}
+                                />
                             </Form.Group>
 
                             <Form.Group as={Row} controlId="formPlaintextSubmit">

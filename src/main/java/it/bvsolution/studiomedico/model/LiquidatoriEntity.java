@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class LiquidatoriEntity {
 
     @Id
-    @SequenceGenerator(name="pk_sequence",sequenceName="liquidatori_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="pk_sequence")
+    @SequenceGenerator(name="liquidatori_pk_sequence",sequenceName="liquidatori_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="liquidatori_pk_sequence")
     @Column(name = "id")
     private Long id;
 
@@ -22,6 +22,9 @@ public class LiquidatoriEntity {
 
     @Column(name = "cognome")
     private String cognome;
+
+    @Column(name = "id_assicurazione")
+    private Long idAssicurazione;
 
     public LiquidatoriEntity() {
         super();
@@ -33,6 +36,7 @@ public class LiquidatoriEntity {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
+                ", idAssicurazione=" + idAssicurazione +
                 '}';
     }
 }

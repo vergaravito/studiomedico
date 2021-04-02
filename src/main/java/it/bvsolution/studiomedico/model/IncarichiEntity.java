@@ -13,8 +13,8 @@ import java.util.Date;
 public class IncarichiEntity {
 
     @Id
-    @SequenceGenerator(name="pk_sequence",sequenceName="incarichi_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="pk_sequence")
+    @SequenceGenerator(name="incarichi_pk_sequence",sequenceName="incarichi_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="incarichi_pk_sequence")
     @Column(name = "id")
     private Long id;
 
@@ -30,11 +30,8 @@ public class IncarichiEntity {
     @Column(name = "id_liquidatore")
     private Long id_liquidatore;
 
-    @Column(name = "ambito")
-    private String ambito;
-
     @Column(name = "id_soggetto")
-    private Long id_soggetto;
+    private Long idSoggetto;
 
     @Column(name = "id_avvocato")
     private Long id_avvocato;
@@ -65,8 +62,7 @@ public class IncarichiEntity {
                 ", tipo='" + tipo + '\'' +
                 ", id_assicurazione=" + id_assicurazione +
                 ", id_liquidatore=" + id_liquidatore +
-                ", ambito='" + ambito + '\'' +
-                ", id_soggetto=" + id_soggetto +
+                ", idSoggetto=" + idSoggetto +
                 ", id_avvocato=" + id_avvocato +
                 ", n_sinistro=" + n_sinistro +
                 ", id_dottore=" + id_dottore +

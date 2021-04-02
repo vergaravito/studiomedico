@@ -3,6 +3,7 @@ import axios from "axios";
 import { Row, Form, Button, Table, Alert} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as FaIcons from "react-icons/fa";
+import AsyncSelect from 'react-select/async';
 
 export function Liquidatori(props) {
     const [postId, setPostId] = useState(null);
@@ -10,13 +11,14 @@ export function Liquidatori(props) {
     const [id, setId] = useState(null);
     const [name, setName] = useState("");
     const [cognome, setCognome] = useState("");
-    
+    const [idAssicurazione, setIdAssicurazione] = useState("");
+    const [dataAss, setDataAss] = useState([]);
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
     
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: id, nome: name, cognome: cognome })
+        body: JSON.stringify({ id: id, nome: name, cognome: cognome, idAssicurazione: idAssicurazione})
     };
 
     const [showSuccessAlert, isShowSuccessAlert]= useState(false);
@@ -45,7 +47,7 @@ export function Liquidatori(props) {
             const deleteOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: liquidatore.id, nome: liquidatore.name, indirizzo: liquidatore.cognome })
+                body: JSON.stringify({ id: liquidatore.id, nome: liquidatore.name, cognome: liquidatore.cognome, idAssicurazione: idAssicurazione})
             };
             fetch('http://localhost:8080/delete/liquidatore/', deleteOptions)
                 .then(response => {
@@ -69,6 +71,7 @@ export function Liquidatori(props) {
         setId(liquidatore.id);
         setName(liquidatore.nome);
         setCognome(liquidatore.cognome);
+        setIdAssicurazione(liquidatore.idAssicurazione);
         setTipoins('Modifica Liquidatore');
     }
 
@@ -88,9 +91,48 @@ export function Liquidatori(props) {
         });
     };
 
+    const fetchAssicurazioni = () => {
+        axios.get("http://localhost:8080/fetch/assicurazioni").then( res => {
+            setDataAss(res.data);
+        });
+    };
+
     useEffect(() => {
         fetchLiquidatori();
+        fetchAssicurazioni();
     }, []);
+
+    const getNomeAssicurazione = (id) => {
+        const nome = "";
+        for (let index = 0; index < dataAss.length; index++) {
+            const element = dataAss[index].id;
+            if(element === id){
+                return dataAss[index].nome;
+            }
+        }
+        return nome;
+    };
+
+    const filterAssicurazioni = (inputValue) => {
+        return dataAss.map((assicurazione, index) => (                                        
+            { value: assicurazione.id, label: assicurazione.nome }
+        )).filter(i =>
+          i.label.toLowerCase().includes(inputValue.toLowerCase())
+        );
+    };
+    const loadAssicurazioni = (inputValue, callback) => {
+        setTimeout(() => {
+          callback(filterAssicurazioni(inputValue));
+        }, 1000);
+    };
+    const getAssicurazioneSelected = (idAssicurazione) => {
+        for (let index = 0; index < dataAss.length; index++) {
+            if(dataAss[index].id === idAssicurazione){
+                return { value: dataAss[index].id, label: dataAss[index].nome }
+            }
+        }
+        return ""
+    };
 
     let liquidatoriArray = data;
 
@@ -99,6 +141,7 @@ export function Liquidatori(props) {
             <tr key={liquidatore.id}>
             <td>{liquidatore.nome}</td>
             <td>{liquidatore.cognome}</td>
+            <td>{getNomeAssicurazione(liquidatore.idAssicurazione)}</td>
             <td><Button onClick={() => handleEdit(liquidatore)}><FaIcons.FaEdit/></Button></td>
             <td><Button onClick={() => handleDelete(liquidatore)}><FaIcons.FaTrash/></Button></td>
             </tr>
@@ -117,6 +160,7 @@ export function Liquidatori(props) {
                             <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
+                            <th>Assicurazione</th>
                             <th>Modifica</th>
                             <th>Elimina</th>
                             </tr>
@@ -154,7 +198,7 @@ export function Liquidatori(props) {
                                 <Form.Label> Cognome </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Indirizzo Liquidatore"
+                                    placeholder="Cognome Liquidatore"
                                     defaultValue=""
                                     value={cognome}
                                     onChange={e => setCognome(e.target.value)}
@@ -163,7 +207,19 @@ export function Liquidatori(props) {
                                 Inserisci il cognome Liquidatore
                                 </Form.Text>
                             </Form.Group>
-
+                            <Form.Group controlId="exampleForm.SelectCustomSizeSm">
+                                <Form.Label> Assicurazione </Form.Label>
+                                <AsyncSelect
+                                    cacheOptions
+                                    placeholder="Seleziona Assicurazione"
+                                    loadOptions={loadAssicurazioni}
+                                    defaultOptions={dataAss.map((assicurazione, index) => (                                        
+                                        { value: assicurazione.id, label: assicurazione.nome }
+                                    ))}
+                                    value={getAssicurazioneSelected(idAssicurazione)}
+                                    onChange={e => setIdAssicurazione(e.value)}
+                                />
+                            </Form.Group>
                             <Form.Group as={Row} controlId="formPlaintextSubmit">
                                 <Button variant="primary" type="submit">Salva</Button>
                                 <Button variant="secondary" onClick={() => clearForm()}>Annulla</Button>

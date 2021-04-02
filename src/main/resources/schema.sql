@@ -6,7 +6,7 @@ CREATE SEQUENCE IF NOT EXISTS liquidatori_id_seq;
 CREATE SEQUENCE IF NOT EXISTS sedi_id_seq;
 CREATE SEQUENCE IF NOT EXISTS soggetti_id_seq;
 CREATE SEQUENCE IF NOT EXISTS appuntamenti_id_seq;
-
+CREATE SEQUENCE IF NOT EXISTS dottori_studi_id_seq;
 
 
 CREATE TABLE IF NOT EXISTS public.assicurazioni
@@ -49,12 +49,36 @@ CREATE TABLE IF NOT EXISTS public.dottori
     CONSTRAINT dottori_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS public.dottori_studi
+(
+    id numeric NOT NULL,
+    id_dottore numeric NOT NULL,
+    id_studio numeric NOT NULL,
+    CONSTRAINT dottori_studi_pkey PRIMARY KEY (id),
+    CONSTRAINT "dottoreFK" FOREIGN KEY (id_dottore)
+            REFERENCES public.dottori (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+            NOT VALID,
+    CONSTRAINT "sedeFK" FOREIGN KEY (id_studio)
+            REFERENCES public.sedi (id) MATCH SIMPLE
+            ON UPDATE NO ACTION
+            ON DELETE NO ACTION
+            NOT VALID
+);
+
 CREATE TABLE IF NOT EXISTS public.liquidatori
 (
     id numeric NOT NULL,
     nome text COLLATE pg_catalog."default" NOT NULL,
     cognome text COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT liquidatori_pkey PRIMARY KEY (id)
+    id_assicurazione numeric,
+    CONSTRAINT liquidatori_pkey PRIMARY KEY (id),
+    CONSTRAINT "assicurazioneFK" FOREIGN KEY (id_assicurazione)
+        REFERENCES public.assicurazioni (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
 );
 
 CREATE TABLE IF NOT EXISTS public.sedi
@@ -91,7 +115,6 @@ CREATE TABLE IF NOT EXISTS public.incarichi
     tipo text COLLATE pg_catalog."default",
     id_assicurazione numeric,
     id_liquidatore numeric,
-    ambito text COLLATE pg_catalog."default",
     id_soggetto numeric,
     id_avvocato numeric,
     n_sinistro numeric,

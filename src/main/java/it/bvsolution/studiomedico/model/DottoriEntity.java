@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class DottoriEntity {
 
     @Id
-    @SequenceGenerator(name="pk_sequence",sequenceName="dottori_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="pk_sequence")
+    @SequenceGenerator(name="dottori_pk_sequence",sequenceName="dottori_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="dottori_pk_sequence")
     @Column(name = "id")
     private Long id;
 

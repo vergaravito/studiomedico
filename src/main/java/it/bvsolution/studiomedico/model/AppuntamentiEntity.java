@@ -13,8 +13,8 @@ import java.util.Date;
 public class AppuntamentiEntity {
 
     @Id
-    @SequenceGenerator(name="pk_sequence",sequenceName="appuntamenti_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="pk_sequence")
+    @SequenceGenerator(name="appuntamenti_pk_sequence",sequenceName="appuntamenti_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="appuntamenti_pk_sequence")
     @Column(name = "id")
     private Long id;
 
