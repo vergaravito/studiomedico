@@ -21,7 +21,11 @@ export function Soggetti(props) {
     const [note, setNote] = useState("");
     const [email, setEmail] = useState("");
     const [codicefiscale, setCodicefiscale] = useState("");
-    
+    const [nomeSearch, setNomeSearch] = useState("");
+    const [cognomeSearch, setCognomeSearch] = useState("");
+    const [telefonoSearch, setTelefonoSearch] = useState("");
+    const [emailSearch, setEmailSearch] = useState("");
+
     const [tipoins, setTipoins] = useState('Inserisci nuovo');
     const [soggettoSelected, setSoggettoSelected] = useState("");
 
@@ -159,123 +163,60 @@ export function Soggetti(props) {
         return null;
     }
 
+    const searchByName = (value) => {
+        setNomeSearch(value);
+        if(value.length > 3 || value.length === 0){
+            axios.get('http://localhost:8080/get/soggetti?nome='+ value +
+                                                    '&cognome=' + cognomeSearch +
+                                                    '&telefono=' + telefonoSearch +
+                                                    '&email=' + emailSearch)
+                .then( res => {
+                    setData(res.data);
+                });
+        }
+    }
+
+    const searchByCognome = (value) => {
+        setCognomeSearch(value);
+        if(value.length > 3 || value.length === 0){
+            axios.get('http://localhost:8080/get/soggetti?nome='+ nomeSearch +
+                                                    '&cognome=' + value +
+                                                    '&telefono=' + telefonoSearch +
+                                                    '&email=' + emailSearch)
+                .then( res => {
+                    setData(res.data);
+                });
+        }
+    }
+
+    const searchByTelefono = (value) => {
+        setTelefonoSearch(value);
+        if(value.length > 3 || value.length === 0){
+            axios.get('http://localhost:8080/get/soggetti?nome='+ nomeSearch +
+                                                    '&cognome=' + cognomeSearch +
+                                                    '&telefono=' + value +
+                                                    '&email=' + emailSearch)
+                .then( res => {
+                    setData(res.data);
+                });
+        }
+    }
+
+    const searchByEmail = (value) => {
+        setEmailSearch(value);
+        if(value.length > 3 || value.length === 0){
+            axios.get('http://localhost:8080/get/soggetti?nome='+ nomeSearch +
+                                                    '&cognome=' + cognomeSearch +
+                                                    '&telefono=' + telefonoSearch +
+                                                    '&email=' + value)
+                .then( res => {
+                    setData(res.data);
+                });
+        }
+    }
+
     return (
         <div class="container">
-            <div class="row">
-                <div class="col-sm-10 mx-auto text-center form p-4">
-                <h1 class="display-5 py-2 text-truncate">Elenco Soggetti</h1>
-                { showSuccessDeleteAlert && <Alert idx="1" variant="success">Soggetto eliminato con successo</Alert>}
-                { showFailDeleteAlert && <Alert idx="2" variant="danger">Eliminazione Soggetto fallita</Alert> }
-                    <Table striped condensed hover>
-                        <thead>
-                            <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Luogo di Nascita</th>
-                            <th>Data di Nascita</th>
-                            <th>Telefono</th>
-                            <th>Email</th>
-                            <th>Apri Dettaglio</th>
-                            <th>Modifica</th>
-                            <th>Elimina</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {soggettiArray.map(renderSoggetti)}
-                        </tbody>
-                    </Table>
-                </div>
-            </div>
-            {showDetails && 
-            <div class="container">
-                <Button onClick={() => isShowDetails(false)}><FaIcons.FaWindowClose/></Button>
-                <div class="row">
-                    <div class="col">
-                        <p>Nome:</p>
-                        <p class="detail-box">{soggettoSelected.nome}</p>
-                    </div>
-                    <div class="col">
-                        <p>Cognome:</p>
-                        <p class="detail-box">{soggettoSelected.cognome}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p>Luogo di Nascita:</p>
-                            <p class="detail-box">{soggettoSelected.luogonascita}</p>
-                    </div>
-                    <div class="col">
-                    <p>Data di Nascita:</p>
-                        <p class="detail-box">
-                        <Moment format="DD/MM/YY">
-                            {soggettoSelected.datanascita}
-                        </Moment>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p>Indirizzo:</p>
-                        <p class="detail-box">
-                        {soggettoSelected.indirizzo}
-                        </p>
-                    </div>
-                    <div class="col">
-                        <p>CAP:
-                        </p>
-                        <p class="detail-box">
-                        {soggettoSelected.cap}
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                    <p>Telefono:
-                    </p>
-                    <p class="detail-box">
-                        {soggettoSelected.telefono}
-                    </p>
-                    </div>
-                    <div class="col">
-                        <p>Email:
-                            </p>
-                        <p class="detail-box">
-                        {soggettoSelected.email}
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                    <p>Sesso:
-                            </p>
-                    <p class="detail-box"> 
-                        {soggettoSelected.sesso}
-                    </p>
-                    </div>
-                    <div class="col">
-                    <p>Codice Fiscale:
-                            </p>
-                    <p class="detail-box">
-                        {soggettoSelected.codicefiscale}</p>
-                    </div>
-                    <div class="col">
-                    <p>Note:
-                            </p>
-                    <p class="detail-box">
-                        {soggettoSelected.note}
-                    </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-
-                        <Button onClick={() => handleEdit(soggettoSelected)}><FaIcons.FaEdit/></Button>
-                    
-                        <Button onClick={() => handleDelete(soggettoSelected)}><FaIcons.FaTrash/></Button>
-                    </div>
-                </div>
-            </div>
-            }
             <div class="row">
                 <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
                 <h1 class="display-5 py-2 text-truncate">{tipoins}</h1>
@@ -436,6 +377,153 @@ export function Soggetti(props) {
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-10 mx-auto text-center form p-4">
+                <h1 class="display-5 py-2 text-truncate">Elenco Soggetti</h1>
+                { showSuccessDeleteAlert && <Alert idx="1" variant="success">Soggetto eliminato con successo</Alert>}
+                { showFailDeleteAlert && <Alert idx="2" variant="danger">Eliminazione Soggetto fallita</Alert> }
+                    <Table striped condensed hover>
+                        <thead>
+                            <tr>
+                            <th><Form.Control
+                                    type="text"
+                                    defaultValue=""
+                                    value={nomeSearch}
+                                    onChange={e => searchByName(e.target.value)}
+                                /></th>
+                            <th><Form.Control
+                                    type="text"
+                                    defaultValue=""
+                                    value={cognomeSearch}
+                                    onChange={e => searchByCognome(e.target.value)}
+                                /></th>
+                            <th></th>
+                            <th></th>
+                            <th><Form.Control
+                                    type="text"
+                                    defaultValue=""
+                                    value={telefonoSearch}
+                                    onChange={e => searchByTelefono(e.target.value)}
+                                /></th>
+                            <th><Form.Control
+                                    type="text"
+                                    defaultValue=""
+                                    value={emailSearch}
+                                    onChange={e => searchByEmail(e.target.value)}
+                                /></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            </tr>
+                            <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Luogo di Nascita</th>
+                            <th>Data di Nascita</th>
+                            <th>Telefono</th>
+                            <th>Email</th>
+                            <th>Apri Dettaglio</th>
+                            <th>Modifica</th>
+                            <th>Elimina</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {soggettiArray.map(renderSoggetti)}
+                        </tbody>
+                    </Table>
+                </div>
+            </div>
+            {showDetails && 
+            <div class="container">
+                <Button onClick={() => isShowDetails(false)}><FaIcons.FaWindowClose/></Button>
+                <div class="row">
+                    <div class="col">
+                        <p>Nome:</p>
+                        <p class="detail-box">{soggettoSelected.nome}</p>
+                    </div>
+                    <div class="col">
+                        <p>Cognome:</p>
+                        <p class="detail-box">{soggettoSelected.cognome}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>Luogo di Nascita:</p>
+                            <p class="detail-box">{soggettoSelected.luogonascita}</p>
+                    </div>
+                    <div class="col">
+                    <p>Data di Nascita:</p>
+                        <p class="detail-box">
+                        <Moment format="DD/MM/YY">
+                            {soggettoSelected.datanascita}
+                        </Moment>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>Indirizzo:</p>
+                        <p class="detail-box">
+                        {soggettoSelected.indirizzo}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p>CAP:
+                        </p>
+                        <p class="detail-box">
+                        {soggettoSelected.cap}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    <p>Telefono:
+                    </p>
+                    <p class="detail-box">
+                        {soggettoSelected.telefono}
+                    </p>
+                    </div>
+                    <div class="col">
+                        <p>Email:
+                            </p>
+                        <p class="detail-box">
+                        {soggettoSelected.email}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                    <p>Sesso:
+                            </p>
+                    <p class="detail-box"> 
+                        {soggettoSelected.sesso}
+                    </p>
+                    </div>
+                    <div class="col">
+                    <p>Codice Fiscale:
+                            </p>
+                    <p class="detail-box">
+                        {soggettoSelected.codicefiscale}</p>
+                    </div>
+                    <div class="col">
+                    <p>Note:
+                            </p>
+                    <p class="detail-box">
+                        {soggettoSelected.note}
+                    </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+
+                        <Button onClick={() => handleEdit(soggettoSelected)}><FaIcons.FaEdit/></Button>
+                    
+                        <Button onClick={() => handleDelete(soggettoSelected)}><FaIcons.FaTrash/></Button>
+                    </div>
+                </div>
+            </div>
+            }
+            
         </div>
     )
 }

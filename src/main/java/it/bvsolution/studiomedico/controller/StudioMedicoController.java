@@ -64,6 +64,15 @@ public class StudioMedicoController {
         return soggettiRepository.findAll();
     }
 
+    @GetMapping(value = "/get/soggetti")
+    public List<SoggettiEntity> fetchSoggettiByName(@RequestParam(name = "nome") String nome,
+                                                    @RequestParam(name = "cognome") String cognome,
+                                                    @RequestParam(name = "telefono") String telefono,
+                                                    @RequestParam(name = "email") String email){
+        return soggettiRepository.findByNomeContainsIgnoreCaseAndCognomeContainsIgnoreCaseAndTelefonoContainsAndEmailContainsIgnoreCase(
+                nome, cognome, telefono, email);
+    }
+
     @PostMapping(value="/insert/soggetto", consumes = "application/json")
     public SoggettiEntity insertSoggetto(@RequestBody SoggettiEntity soggetto) {
         return soggettiRepository.save(soggetto);
