@@ -10,12 +10,11 @@ import java.util.List;
 @Repository
 public interface IncarichiRepository extends CrudRepository<IncarichiEntity, Long> {
 
-    public List<IncarichiEntity> findByTipo(String tipo);
-    public List<IncarichiEntity> findAll();
-    public List<IncarichiEntity> findByIdSoggetto(Long idSoggetto);
+    List<IncarichiEntity> findByTipo(String tipo);
+    List<IncarichiEntity> findAll();
+    List<IncarichiEntity> findByIdSoggetto(Long idSoggetto);
 
-    @Query(value = "SELECT CURRVAL('incarichi_id_seq')", nativeQuery = true)
-    public Long getCurrentValFromSequence();
-
+    @Query(value = "SELECT nextval('incarichi_id_seq')", nativeQuery = true)
+    Long getCurrentValFromSequence();
 
 }

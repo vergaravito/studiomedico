@@ -1,12 +1,7 @@
 package it.bvsolution.studiomedico.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
 @Entity(name = "sedi")
 @Table(name = "sedi")
 public class SediEntity {
@@ -28,6 +23,45 @@ public class SediEntity {
 
     public SediEntity() {
         super();
+    }
+
+    public SediEntity(Long id, String nome, String indirizzo, int cap) {
+        this.id = id;
+        this.nome = nome;
+        this.indirizzo = indirizzo;
+        this.cap = cap;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
+    }
+
+    public int getCap() {
+        return cap;
+    }
+
+    public void setCap(int cap) {
+        this.cap = cap;
     }
 
     @Override

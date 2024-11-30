@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface LiquidatoriRepository extends CrudRepository<LiquidatoriEntity, Long> {
 
-    public Optional<LiquidatoriEntity> findByNomeAndCognome(String nome,String cognome);
-    public List<LiquidatoriEntity> findAll();
-    public List<LiquidatoriEntity> findByIdAssicurazione(Long idAssicurazione);
+    Optional<LiquidatoriEntity> findByNomeAndCognome(String nome,String cognome);
+    List<LiquidatoriEntity> findAll();
+    List<LiquidatoriEntity> findByIdAssicurazione(Long idAssicurazione);
 }

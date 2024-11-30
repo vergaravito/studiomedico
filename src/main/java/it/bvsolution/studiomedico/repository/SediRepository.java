@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface SediRepository extends CrudRepository<SediEntity, Long> {
 
-    public Optional<SediEntity> findByNome(String nome);
-    public List<SediEntity> findAll();
+    Optional<SediEntity> findByNome(String nome);
+    List<SediEntity> findAll();
 }

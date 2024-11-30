@@ -1,13 +1,7 @@
 package it.bvsolution.studiomedico.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import javax.persistence.*;
-import java.util.Date;
 
-@Data
-@AllArgsConstructor
 @Entity(name = "dottori_studi")
 @Table(name = "dottori_studi")
 public class DottoriStudiEntity {
@@ -26,6 +20,36 @@ public class DottoriStudiEntity {
 
     public DottoriStudiEntity() {
         super();
+    }
+
+    public DottoriStudiEntity(Long id, Long idDottore, Long idStudio) {
+        this.id = id;
+        this.idDottore = idDottore;
+        this.idStudio = idStudio;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getIdDottore() {
+        return idDottore;
+    }
+
+    public void setIdDottore(Long idDottore) {
+        this.idDottore = idDottore;
+    }
+
+    public Long getIdStudio() {
+        return idStudio;
+    }
+
+    public void setIdStudio(Long idStudio) {
+        this.idStudio = idStudio;
     }
 
     @Override

@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface AvvocatiRepository extends CrudRepository<AvvocatiEntity, Long> {
 
-    public Optional<AvvocatiEntity> findByNomeAndCognome(String nome,String cognome);
-    public List<AvvocatiEntity> findAll();
+    Optional<AvvocatiEntity> findByNomeAndCognome(String nome,String cognome);
+    List<AvvocatiEntity> findAll();
 }

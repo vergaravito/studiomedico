@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface DottoriStudiRepository extends CrudRepository<DottoriStudiEntity, Long> {
 
-    public List<DottoriStudiEntity> findAll();
+    List<DottoriStudiEntity> findAll();
 }
