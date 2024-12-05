@@ -1,11 +1,17 @@
 package it.bvsolution.studiomedico.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Entity(name = "appuntamenti")
 @Table(name = "appuntamenti")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AppuntamentiEntity {
 
     @Id
@@ -32,85 +38,4 @@ public class AppuntamentiEntity {
     @Column(name = "note")
     private String note;
 
-    public AppuntamentiEntity() {
-        super();
-    }
-
-    public AppuntamentiEntity(Long id, Long idStudio, LocalDateTime dataAppuntamento, String oraAppuntamento, int durata, Long idIncarico, String note) {
-        this.id = id;
-        this.idStudio = idStudio;
-        this.dataAppuntamento = dataAppuntamento;
-        this.oraAppuntamento = oraAppuntamento;
-        this.durata = durata;
-        this.idIncarico = idIncarico;
-        this.note = note;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getIdStudio() {
-        return idStudio;
-    }
-
-    public void setIdStudio(Long idStudio) {
-        this.idStudio = idStudio;
-    }
-
-    public LocalDateTime getDataAppuntamento() {
-        return dataAppuntamento;
-    }
-
-    public void setDataAppuntamento(LocalDateTime dataAppuntamento) {
-        this.dataAppuntamento = dataAppuntamento;
-    }
-
-    public String getOraAppuntamento() {
-        return oraAppuntamento;
-    }
-
-    public void setOraAppuntamento(String oraAppuntamento) {
-        this.oraAppuntamento = oraAppuntamento;
-    }
-
-    public int getDurata() {
-        return durata;
-    }
-
-    public void setDurata(int durata) {
-        this.durata = durata;
-    }
-
-    public Long getIdIncarico() {
-        return idIncarico;
-    }
-
-    public void setIdIncarico(Long idIncarico) {
-        this.idIncarico = idIncarico;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    @Override
-    public String toString() {
-        return "AppuntamentiEntity{" +
-                "id=" + id +
-                ", id_studio=" + idStudio +
-                ", dataAppuntamento=" + dataAppuntamento +
-                ", durata=" + durata +
-                ", id_incarico=" + idIncarico +
-                ", note='" + note + '\'' +
-                '}';
-    }
 }

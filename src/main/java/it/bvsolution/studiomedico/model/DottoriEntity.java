@@ -1,9 +1,16 @@
 package it.bvsolution.studiomedico.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity(name = "dottori")
 @Table(name = "dottori")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DottoriEntity {
 
     @Id
@@ -18,46 +25,4 @@ public class DottoriEntity {
     @Column(name = "cognome")
     private String cognome;
 
-    public DottoriEntity() {
-        super();
-    }
-
-    public DottoriEntity(Long id, String nome, String cognome) {
-        this.id = id;
-        this.nome = nome;
-        this.cognome = cognome;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    @Override
-    public String toString() {
-        return "DottoriEntity{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
-                '}';
-    }
 }
